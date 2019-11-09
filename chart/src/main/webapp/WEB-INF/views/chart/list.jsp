@@ -91,8 +91,7 @@ $(function(){
 	});
 });
 function list(){
-	var param=/* $("#form1").serialize(); */
-		  "arg_rn="+$("#arg_rn").val()+"&arg_area_cd="+$("#arg_area_cd").val()
+	var param = "arg_rn="+$("#arg_rn").val()+"&arg_area_cd="+$("#arg_area_cd").val()
 			+"&arg_gr="+$(":radio[name='arg_gr']:checked").val()+"&arg_rk1="+$("#arg_rk1").val()
 			+"&arg_rk2="+$("#arg_rk2").val()+"&arg_rk3="+$("#arg_rk3").val()
 			+"&arg_rk4="+$("#arg_rk4").val()+"&arg_rk5="+$("#arg_rk5").val()
@@ -103,13 +102,12 @@ function list(){
 	$("#div1").empty();
 	$("#tbody").empty();
 	$.ajax({
+		async: true,
 		type: "GET",
 		url: "${path}/sale/ajax_list",
 		data: param,
 		contentType: "application/json; charset=utf-8",
 		success: function(map){
-			//console.log(result);
-			//$("#result").html(result);			
 			console.log(map.time);
 			console.log(map.list);			
 			$('<span>').append("실행 시간: "+map.time+" sec").appendTo("#div1");
