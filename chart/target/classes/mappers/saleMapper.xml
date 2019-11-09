@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sale">
+	<select id="list" resultType="com.sales.chart.model.vo.SaleVO">
+		select decode(gr,'00',cd_nm,'01',cd_nm||'합계','총계') cd_nm
+	      ,region_area
+	      ,c00||
+	      ' ('||round(c00*100/tot,2)||'%)'||
+	       decode(c00,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c00,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk0,max_rk),decode(gr,'00',1,'01',3,5),2)) c00
+	      ,c01||
+	      ' ('||round(c01*100/tot,2)||'%)'||
+	       decode(c01,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c01,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk1,max_rk),decode(gr,'00',1,'01',3,5),2)) c01 
+	      ,c02||
+	      ' ('||round(c02*100/tot,2)||'%)'||
+	       decode(c02,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c02,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk2,max_rk),decode(gr,'00',1,'01',3,5),2)) c02
+	      ,c03||
+	      ' ('||round(c03*100/tot,2)||'%)'||
+	       decode(c03,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c03,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk3,max_rk),decode(gr,'00',1,'01',3,5),2)) c03
+	      ,c04||
+	      ' ('||round(c04*100/tot,2)||'%)'||
+	       decode(c04,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c04,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk4,max_rk),decode(gr,'00',1,'01',3,5),2)) c04
+	      ,c05||
+	      ' ('||round(c05*100/tot,2)||'%)'||
+	       decode(c05,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c05,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk5,max_rk),decode(gr,'00',1,'01',3,5),2)) c05
+	      ,c06||
+	      ' ('||round(c06*100/tot,2)||'%)'||
+	       decode(c06,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c06,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk6,max_rk),decode(gr,'00',1,'01',3,5),2)) c06
+	      ,c07||
+	      ' ('||round(c07*100/tot,2)||'%)'||
+	       decode(c07,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c07,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk7,max_rk),decode(gr,'00',1,'01',3,5),2)) c07
+	      ,c08||
+	      ' ('||round(c08*100/tot,2)||'%)'||
+	       decode(c08,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c08,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk8,max_rk),decode(gr,'00',1,'01',3,5),2)) c08
+	      ,c09||
+	      ' ('||round(c09*100/tot,2)||'%)'||
+	       decode(c09,greatest(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▲')||
+	       decode(c09,least(c00,c01,c02,c03,c04,c05,c06,c07,c08,c09),'▼')||
+	       '*'||to_number(substr(nvl(rk9,max_rk),decode(gr,'00',1,'01',3,5),2)) c09
+	      ,tot
+	      ,gr
+		from (
+		    select area_cd
+		          ,region_area 
+		          ,nvl(sum(decode(prod_id,'100000',sale_cnt)),0) c00 
+		          ,min(decode(prod_id,'100000',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk0
+		          ,nvl(sum(decode(prod_id,'100001',sale_cnt)),0) c01
+		          ,min(decode(prod_id,'100001',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk1                      
+		          ,nvl(sum(decode(prod_id,'100002',sale_cnt)),0) c02
+		          ,min(decode(prod_id,'100002',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk2                      
+		          ,nvl(sum(decode(prod_id,'100003',sale_cnt)),0) c03
+		          ,min(decode(prod_id,'100003',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk3                      
+		          ,nvl(sum(decode(prod_id,'100004',sale_cnt)),0) c04
+		          ,min(decode(prod_id,'100004',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk4                      
+		          ,nvl(sum(decode(prod_id,'100005',sale_cnt)),0) c05
+		          ,min(decode(prod_id,'100005',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk5                      
+		          ,nvl(sum(decode(prod_id,'100006',sale_cnt)),0) c06
+		          ,min(decode(prod_id,'100006',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk6                      
+		          ,nvl(sum(decode(prod_id,'100007',sale_cnt)),0) c07
+		          ,min(decode(prod_id,'100007',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk7                     
+		          ,nvl(sum(decode(prod_id,'100008',sale_cnt)),0) c08
+		          ,min(decode(prod_id,'100008',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk8                      
+		          ,nvl(sum(decode(prod_id,'100009',sale_cnt)),0) c09
+		          ,min(decode(prod_id,'100009',lpad(lrk,2,'0')||lpad(srk,2,'0')||lpad(trk,2,'0'))) rk9                      
+		          ,nvl(sum(sale_cnt),0) tot
+		          ,max(lpad(lrk+1,2,'0')||lpad(srk+1,2,'0')||lpad(trk+1,2,'0')) max_rk
+		          ,grouping(area_cd)||grouping(region_area) gr
+		    from (
+		            select area_cd
+		                  ,region_area
+		                  ,prod_id
+		                  ,sale_cnt
+		                  ,dense_rank() over(partition by area_cd,region_area order by sale_cnt desc) lrk
+		                  ,dense_rank() over(partition by area_cd order by s_t desc) srk
+		                  ,dense_rank() over(order by gt desc) trk
+		            from (
+		                    select area_cd
+		                          ,region_area
+		                          ,prod_id
+		                          ,sale_cnt
+		                          ,sum(sale_cnt) over(partition by area_cd,prod_id) s_t
+		                          ,sum(sale_cnt) over(partition by prod_id) gt
+		                    from (
+		                            select area_cd
+		                                  ,region_area
+		                                  ,prod_id
+		                                  ,sum(sale_cnt) sale_cnt
+		                            from sale_tbl
+		                            where rownum &lt;= #{arg_rn}
+		                                  and area_cd=nvl(#{arg_area_cd},area_cd)
+		                            group by area_cd
+		                                    ,region_area
+		                                    ,prod_id
+		                            order by prod_id,area_cd,region_area
+		                         )
+		                 )
+		            order by 1,3)
+		    group by rollup(area_cd,region_area)
+		    order by area_cd) ta, cd_tbl tb
+		where ta.area_cd=tb.cd_id(+)
+		    and length(tb.cd_id(+))=2    
+		    and gr=decode(#{arg_gr},'00','00','01','01','11','11',gr)    
+		order by decode(area_cd,'10',#{arg_rk1},'20',#{arg_rk2},'30',#{arg_rk3},'40',#{arg_rk4},'50',#{arg_rk5},'60',#{arg_rk6},'70',#{arg_rk7},'80',#{arg_rk8},'90',#{arg_rk9},'95',#{arg_rk10})
+		        ,decode(#{arg_dir},'F',1,-1)*to_number(gr)
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
