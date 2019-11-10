@@ -7,7 +7,7 @@
 <title>실시간 통계 확인</title>
 <%@ include file="../include/header.jsp" %>
 <script src="../include/jquery-3.3.1.min.js"></script>
-<script src="../js/chart.js"></script>
+<script src="../js/fnList.js"></script>
 <link href="../css/list_style.css" rel="stylesheet">
 </head>
 <body>
